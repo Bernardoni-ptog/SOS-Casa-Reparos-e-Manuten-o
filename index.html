@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa em Ordem - Escolha de Serviços</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .service-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .service-card:hover { transform: translateY(-8px); }
+    .service-card.selected { transform: scale(1.02); }
+    .check-icon { opacity: 0; transform: scale(0); transition: all 0.3s ease; }
+    .service-card.selected .check-icon { opacity: 1; transform: scale(1); }
+    .pulse-ring { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse-ring { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.1; } }
+    .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    body { box-sizing: border-box; }
+  </style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);">
+   <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pulse-ring"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pulse-ring" style="animation-delay: 1s;"></div>
+   </div>
+
+   <div class="relative z-10 min-h-full flex flex-col items-center justify-center px-4 py-12">
+    <div class="text-center mb-12 fade-in">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl mb-6 shadow-lg shadow-amber-500/30">
+       <i data-lucide="wrench" class="w-8 h-8 text-slate-900"></i>
+      </div>
+      <h1 id="main-title" class="text-4xl md:text-5xl font-bold text-white mb-4">Qual cômodo precisa de reparo?</h1>
+      <p id="subtitle" class="text-slate-400 text-lg max-w-md mx-auto">Selecione a área da casa onde você precisa de serviço</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-8">
+      <div class="service-card cursor-pointer bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 rounded-3xl p-8 text-center relative group" data-service="sala" onclick="selectService('sala')">
+       <div class="check-icon absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+       <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow"><i data-lucide="sofa" class="w-10 h-10 text-white"></i></div>
+       <h3 class="text-xl font-semibold text-white mb-2">Sala</h3>
+      </div>
+      <div class="service-card cursor-pointer bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 rounded-3xl p-8 text-center relative group" data-service="cozinha" onclick="selectService('cozinha')">
+       <div class="check-icon absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+       <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow"><i data-lucide="utensils" class="w-10 h-10 text-white"></i></div>
+       <h3 class="text-xl font-semibold text-white mb-2">Cozinha</h3>
+      </div>
+      <div class="service-card cursor-pointer bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 rounded-3xl p-8 text-center relative group" data-service="banheiro" onclick="selectService('banheiro')">
+       <div class="check-icon absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+       <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-violet-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-violet-500/30 group-hover:shadow-violet-500/50 transition-shadow"><i data-lucide="droplet" class="w-10 h-10 text-white"></i></div>
+       <h3 class="text-xl font-semibold text-white mb-2">Banheiro</h3>
+      </div>
+      <div class="service-card cursor-pointer bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 rounded-3xl p-8 text-center relative group" data-service="quarto" onclick="selectService('quarto')">
+       <div class="check-icon absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+       <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-500/30 group-hover:shadow-pink-500/50 transition-shadow"><i data-lucide="bed" class="w-10 h-10 text-white"></i></div>
+       <h3 class="text-xl font-semibold text-white mb-2">Quarto</h3>
+      </div>
+      <div class="service-card cursor-pointer bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 rounded-3xl p-8 text-center relative group" data-service="area-externa" onclick="selectService('area-externa')">
+       <div class="check-icon absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+       <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:shadow-green-500/50 transition-shadow"><i data-lucide="trees" class="w-10 h-10 text-white"></i></div>
+       <h3 class="text-xl font-semibold text-white mb-2">Área Externa</h3>
+      </div>
+      <div class="service-card cursor-pointer bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 rounded-3xl p-8 text-center relative group" data-service="geral" onclick="selectService('geral')">
+       <div class="check-icon absolute top-4 right-4 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+       <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:shadow-amber-500/50 transition-shadow"><i data-lucide="home" class="w-10 h-10 text-white"></i></div>
+       <h3 class="text-xl font-semibold text-white mb-2">Geral</h3>
+      </div>
+    </div>
+    
+    <div id="selection-list" class="w-full max-w-4xl mt-8 opacity-0 transition-all duration-300" style="max-height: 0; overflow: hidden;">
+     <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-3xl p-6">
+      <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2"><i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i> Serviços Selecionados</h3>
+      <div id="selected-items" class="space-y-2"></div>
+     </div>
+    </div>
+
+    <div class="mt-8 fade-in" style="animation-delay: 0.3s;">
+      <button id="continue-btn" onclick="handleContinue()" disabled class="px-10 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 font-semibold rounded-2xl shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-amber-500/30 flex items-center gap-3"> 
+        <span>Gerar Orçamento no WhatsApp</span> <i data-lucide="arrow-right" class="w-5 h-5"></i> 
+      </button>
+    </div>
+
+    <div id="selection-feedback" class="mt-6 text-slate-500 text-sm opacity-0 transition-opacity duration-300">
+      <i data-lucide="info" class="w-4 h-4 inline mr-1"></i> <span id="feedback-text">Selecione um cômodo para começar</span>
+    </div>
+   </div>
+  </div>
+
+  <div id="name-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm">
+   <div class="bg-slate-800 border border-slate-700 rounded-3xl p-10 max-w-md mx-4 transform scale-95 opacity-0 transition-all duration-300" id="name-card">
+    <h2 class="text-2xl font-bold text-white mb-4">Como você se chama?</h2>
+    <input type="text" id="user-name" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 mb-6" placeholder="Digite seu nome aqui...">
+    <button onclick="confirmName()" class="w-full px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 rounded-xl font-semibold">Continuar</button>
+   </div>
+  </div>
+
+  <div id="services-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm">
+   <div class="bg-slate-800 border border-slate-700 rounded-3xl p-10 max-w-md mx-4 transform scale-95 opacity-0 transition-all duration-300 max-h-[80vh] overflow-y-auto" id="services-card">
+    <div class="flex justify-between items-center mb-6">
+     <h2 id="services-title" class="text-2xl font-bold text-white">Serviços</h2>
+     <button onclick="closeServicesList()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+    </div>
+    <div id="services-list" class="space-y-3"></div>
+    <div id="other-service-container" class="hidden mt-4 pt-4 border-t border-slate-600">
+        <label class="block text-white font-medium mb-2">Descreva o outro serviço:</label>
+        <textarea id="other-service-text" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500" placeholder="Ex: Pintura de parede, reparo específico..."></textarea>
+    </div>
+    <div class="flex gap-4 mt-6">
+     <button onclick="closeServicesList()" class="flex-1 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl transition-colors font-medium">Cancelar</button> 
+     <button onclick="confirmServices()" class="flex-1 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 rounded-xl transition-colors font-semibold">Confirmar</button>
+    </div>
+   </div>
+  </div>
+
+  <div id="confirmation-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm">
+   <div class="bg-slate-800 border border-slate-700 rounded-3xl p-10 text-center max-w-md mx-4 transform scale-95 opacity-0 transition-all duration-300" id="confirmation-card">
+    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center"><i data-lucide="alert-circle" class="w-10 h-10 text-white"></i></div>
+    <h2 class="text-2xl font-bold text-white mb-3">Confirmar Solicitação</h2>
+    <p id="confirmation-service" class="text-slate-400 mb-8 text-left whitespace-pre-line"></p>
+    <div class="flex gap-4">
+      <button onclick="cancelConfirmation()" class="flex-1 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl transition-colors font-medium"> Voltar </button> 
+      <button onclick="confirmService()" class="flex-1 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 rounded-xl transition-colors font-semibold"> Confirmar e Enviar </button>
+    </div>
+   </div>
+  </div>
+
+  <div id="whatsapp-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm">
+   <div class="bg-slate-800 border border-slate-700 rounded-3xl p-10 text-center max-w-md mx-4 transform scale-95 opacity-0 transition-all duration-300" id="whatsapp-card">
+    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-10 h-10 text-white"></i></div>
+    <h2 class="text-2xl font-bold text-white mb-3">Tudo Pronto!</h2>
+    <p class="text-slate-400 mb-8">Clique no botão abaixo para abrir o seu WhatsApp e enviar os detalhes.</p>
+    <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex w-full px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-xl transition-all font-semibold hover:shadow-lg hover:shadow-green-500/30 items-center gap-2 justify-center mb-4"> 
+      <i data-lucide="message-circle" class="w-5 h-5"></i> Enviar Mensagem Agora 
+    </a> 
+    <button onclick="resetSelection()" class="block w-full px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl transition-colors font-medium"> Escolher outros serviços </button>
+   </div>
+  </div>
+
+  <script>
+      const servicesData = {
+        'sala': { name: 'Sala', services: ['Instalar Tomada', 'Instalar Lampada', 'Instalar Cortina', 'Instalar Painel para TV', 'Movimentar Móveis', 'Instalar Quadros', 'Instalar Fechadura Eletrônica', 'Instalar Prateleira', 'Troca de Fechaduras', 'Ajuste de porta', 'Outro Serviço'] },
+        'cozinha': { name: 'Cozinha', services: ['Instalar Tomada', 'Instalar Lampada', 'Instalar Cortina', 'Instalar Prateleira', 'Instalar de Sifão', 'Movimentar Móveis', 'Troca de Fechaduras', 'Ajuste de porta', 'Outro Serviço'] },
+        'banheiro': { name: 'Banheiro', services: ['Instalar Tomada', 'Instalar Lampada', 'Instalar de Sifão', 'Instalar Chuveiro', 'Intalar Torneira', 'Reparo de Caixa de Descarga', 'Troca de Fechaduras', 'Ajuste de porta', 'Instalar ou Trocar Acento de Privada', 'Outro Serviço'] },
+        'quarto': { name: 'Quarto', services: ['Troca de Fechaduras', 'Ajuste de porta', 'Instalar Tomada', 'Instalar Lampada', 'Instalar Cortina', 'Instalar Prateleira', 'Ajustes de Móveis', 'Movimentar Móveis', 'Instalar Quadros', 'Outro Serviço'] },
+        'area-externa': { name: 'Área Externa', services: ['Instalar Torneira', 'Instalar Lampada', 'Instalar Tomada', 'Instalar Gancho e Suporte em Geral', 'Outro Serviço'] },
+        'geral': { name: 'Geral', services: ['Instalar Tomada', 'Instalar Lampada', 'Instalar Cortina', 'Instalar Prateleira', 'Outro Serviço'] }
+      };
+    
+    let selectedService = null;
+    let selectedServiceOptions = [];
+    let allSelectedServices = {};
+    let otherServicesData = {}; // Armazena descrições de "Outro Serviço"
+    let userName = '';
+
+    function selectService(service) {
+      selectedService = service;
+      selectedServiceOptions = allSelectedServices[service] || [];
+      const selectedCard = document.querySelector(`[data-service="${service}"]`);
+      selectedCard.classList.add('selected');
+      selectedCard.style.borderColor = '#f59e0b';
+      showServicesList(service);
+      updateFeedback();
+    }
+    
+    function showServicesList(service) {
+      const serviceData = servicesData[service];
+      const servicesModal = document.getElementById('services-modal');
+      const servicesCard = document.getElementById('services-card');
+      const servicesList = document.getElementById('services-list');
+      const otherContainer = document.getElementById('other-service-container');
+      const otherTextarea = document.getElementById('other-service-text');
+      
+      document.getElementById('services-title').textContent = `Serviços - ${serviceData.name}`;
+      servicesList.innerHTML = '';
+      
+      // Carrega o valor salvo em "Outro Serviço" se existir
+      otherTextarea.value = otherServicesData[service] || '';
+      otherContainer.classList.toggle('hidden', !selectedServiceOptions.includes('Outro Serviço'));
+
+      serviceData.services.forEach(serviceOption => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center gap-3 p-4 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 rounded-xl transition-all cursor-pointer';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'w-5 h-5 cursor-pointer accent-amber-400';
+        checkbox.checked = selectedServiceOptions.includes(serviceOption);
+        checkbox.onchange = () => {
+            toggleServiceOption(serviceOption);
+            if(serviceOption === 'Outro Serviço') otherContainer.classList.toggle('hidden', !checkbox.checked);
+        };
+        const label = document.createElement('label');
+        label.textContent = serviceOption;
+        label.className = 'flex-1 text-white font-medium cursor-pointer';
+        label.onclick = () => checkbox.click();
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        servicesList.appendChild(div);
+      });
+      servicesModal.classList.remove('hidden');
+      setTimeout(() => { servicesCard.style.transform = 'scale(1)'; servicesCard.style.opacity = '1'; }, 10);
+    }
+    
+    function toggleServiceOption(serviceOption) {
+      const index = selectedServiceOptions.indexOf(serviceOption);
+      if (index > -1) { selectedServiceOptions.splice(index, 1); } 
+      else { selectedServiceOptions.push(serviceOption); }
+    }
+    
+    function closeServicesList() {
+      const servicesModal = document.getElementById('services-modal');
+      const servicesCard = document.getElementById('services-card');
+      const otherTextarea = document.getElementById('other-service-text');
+
+      if (selectedServiceOptions.includes('Outro Serviço')) {
+        otherServicesData[selectedService] = otherTextarea.value;
+      } else {
+        delete otherServicesData[selectedService];
+      }
+
+      servicesCard.style.transform = 'scale(0.95)'; servicesCard.style.opacity = '0';
+      setTimeout(() => { servicesModal.classList.add('hidden'); }, 300);
+      
+      if (selectedServiceOptions.length > 0) { allSelectedServices[selectedService] = [...selectedServiceOptions]; } 
+      else { delete allSelectedServices[selectedService]; const selectedCard = document.querySelector(`[data-service="${selectedService}"]`); selectedCard.classList.remove('selected'); selectedCard.style.borderColor = ''; }
+      
+      document.getElementById('continue-btn').disabled = Object.keys(allSelectedServices).length === 0;
+      selectedService = null; selectedServiceOptions = [];
+      updateFeedback();
+    }
+    
+    function confirmServices() { closeServicesList(); }
+    
+    function handleContinue() {
+      const nameModal = document.getElementById('name-modal');
+      const nameCard = document.getElementById('name-card');
+      nameModal.classList.remove('hidden');
+      setTimeout(() => { nameCard.style.transform = 'scale(1)'; nameCard.style.opacity = '1'; }, 10);
+    }
+    
+    function confirmName() {
+      const inputName = document.getElementById('user-name').value.trim();
+      if (!inputName) { alert('Por favor, digite seu nome.'); return; }
+      userName = inputName;
+      
+      const nameModal = document.getElementById('name-modal');
+      nameModal.classList.add('hidden');
+      
+      let summaryText = `Olá, me chamo ${userName}.\n\nVocê selecionou:\n\n`;
+      Object.keys(allSelectedServices).forEach(service => {
+        summaryText += `• ${servicesData[service].name}: ${allSelectedServices[service].join(', ')}\n`;
+        if(otherServicesData[service]) summaryText += `  (Obs: ${otherServicesData[service]})\n`;
+      });
+      
+      const confirmationModal = document.getElementById('confirmation-modal');
+      const confirmationCard = document.getElementById('confirmation-card');
+      document.getElementById('confirmation-service').textContent = summaryText;
+      confirmationModal.classList.remove('hidden');
+      setTimeout(() => { confirmationCard.style.transform = 'scale(1)'; confirmationCard.style.opacity = '1'; }, 10);
+    }
+    
+    function cancelConfirmation() {
+      const confirmationModal = document.getElementById('confirmation-modal');
+      const confirmationCard = document.getElementById('confirmation-card');
+      confirmationCard.style.transform = 'scale(0.95)'; confirmationCard.style.opacity = '0';
+      setTimeout(() => { confirmationModal.classList.add('hidden'); }, 300);
+    }
+    
+    function confirmService() {
+      cancelConfirmation();
+      let message = `Olá! Meu nome é ${userName} e gostaria de solicitar um orçamento para:\n\n`;
+      Object.keys(allSelectedServices).forEach(service => {
+        message += `*${servicesData[service].name}*:\n- ${allSelectedServices[service].join('\n- ')}\n`;
+        if(otherServicesData[service]) message += `- Obs: ${otherServicesData[service]}\n`;
+        message += `\n`;
+      });
+      
+      const whatsappPhone = '5518996831789'; 
+      const whatsappURL = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
+      
+      setTimeout(() => {
+        const whatsappModal = document.getElementById('whatsapp-modal');
+        const whatsappCard = document.getElementById('whatsapp-card');
+        document.getElementById('whatsapp-link').href = whatsappURL;
+        whatsappModal.classList.remove('hidden');
+        setTimeout(() => { whatsappCard.style.transform = 'scale(1)'; whatsappCard.style.opacity = '1'; }, 10);
+      }, 300);
+    }
+    
+    function resetSelection() { location.reload(); }
+    
+    function updateFeedback() {
+      const feedback = document.getElementById('selection-feedback');
+      const feedbackText = document.getElementById('feedback-text');
+      const selectionList = document.getElementById('selection-list');
+      const selectedItems = document.getElementById('selected-items');
+      const totalRooms = Object.keys(allSelectedServices).length;
+      if (totalRooms === 0) { feedback.style.opacity = '0'; selectionList.style.opacity = '0'; selectionList.style.maxHeight = '0'; } 
+      else {
+        feedback.style.opacity = '1'; selectionList.style.opacity = '1'; selectionList.style.maxHeight = '1000px';
+        feedbackText.textContent = `${totalRooms} cômodo(s) selecionado(s)`;
+        selectedItems.innerHTML = '';
+        Object.keys(allSelectedServices).forEach(service => {
+          const div = document.createElement('div');
+          div.className = 'bg-slate-700/50 border border-slate-600 rounded-xl p-3';
+          div.innerHTML = `<div class="text-white font-medium text-sm flex items-center gap-2"><i data-lucide="home" class="w-4 h-4 text-amber-400"></i>${servicesData[service].name}</div><div class="text-slate-300 text-xs mt-1 ml-6">${allSelectedServices[service].join(', ')}</div>`;
+          selectedItems.appendChild(div);
+        });
+        lucide.createIcons();
+      }
+    }
+    
+    lucide.createIcons();
+  </script>
+ </body>
+</html>
